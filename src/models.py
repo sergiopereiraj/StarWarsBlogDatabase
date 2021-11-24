@@ -8,55 +8,37 @@ from eralchemy import render_er
 
 Base = declarative_base()
 
-class Perfiles(Base):
-    __tablename__ = 'perfiles'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
-    ciudad = Column(String(250))
-    edad = Column(Integer)
-    descripcion = Column(String(250))
-
-class Users(Base):
+class User(Base):
     __tablename__ = 'users'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
-    user_id = Column(Integer, nullable=False)
-    user_name = Column(String, nullable=False)
+    id = Column(Integer, primary_key=True)
+    user_name = Column(String(250), nullable=False)
     password = Column(String(250), nullable=False)
-    perfiles = relationship(Perfiles)
+    personajes = relationship("Personajes")
+    naves = relationship("Naves")
+    armas = relationship("Armas")
 
-class Personajes(Base):
+class Personaje(Base):
     __tablename__ = 'personajes'
-    user_id = Column(Integer, ForeignKey("users.user_id"))
+    id = Column(Integer, primary_key=True)
     ejercito_al_que_pertenece = Column(String(250))
     edad = Column(Integer)
     civilizacion_planeta = Column(String(250))
-    users = relationship(Users)
+    user_id = Column(Integer, ForeignKey("users.id"))
 
-class Personajes(Base):
-    __tablename__ = 'personajes'
-    user_id = Column(Integer, ForeignKey("users.user_id"))
-    ejercito_al_que_pertenece = Column(String(250))
-    edad = Column(Integer)
-    civilizacion_planeta = Column(String(250))
-    users = relationship(Users)
-
-class Naves(Base):
+class Nave(Base):
     __tablename__ = 'naves'
-    user_id = Column(Integer, ForeignKey("users.user_id"))
+    id = Column(Integer, primary_key=True)
     forma_de_desplazar = Column(String(250))
     color = Column(String(250))
     piloto = Column(String(250))
-    users = relationship(Users)
+    user_id = Column(Integer, ForeignKey("users.id"))  
 
-class Armas(Base):
+class Arma(Base):
     __tablename__ = 'armas'
-    user_id = Column(Integer, ForeignKey("users.user_id"))
+    id = Column(Integer, primary_key=True)
     daño_arma = Column(String(250))
     tamaño_arma = Column(String(250))
-    users = relationship(Users)
+    user_id = Column(Integer, ForeignKey("users.id"))   
 
     def to_dict(self):
         return {}
